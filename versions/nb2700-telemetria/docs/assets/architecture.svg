@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" role="img" aria-labelledby="archTitle archDesc">
+  <title id="archTitle">Arquitectura de nb2700-telemetria</title>
+  <desc id="archDesc">Host Linux con toolchain netbox-ppc, router NetModule NB2700 y módem u-blox MPCI-L280 conectados por scp y UART.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0b0f14; }
+      .panel { fill: #111820; stroke: #253040; stroke-width: 1.5; }
+      .panel-alt { fill: #0f1620; stroke: #253040; stroke-width: 1.5; }
+      .card { fill: #0d141c; stroke: #2d3b4d; stroke-width: 1; }
+      .title { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 30px; font-weight: 700; }
+      .subtitle { fill: #8b98a9; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 14px; }
+      .h2 { fill: #58a6ff; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.2px; }
+      .h3 { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+      .body { fill: #a9b7c6; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 12.5px; }
+      .mono { fill: #d7e3f0; font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace; font-size: 12px; }
+      .small { fill: #6f7f92; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 11px; }
+      .green { fill: #3fb950; }
+      .amber { fill: #d29922; }
+      .blue { fill: #58a6ff; }
+      .line { stroke: #58a6ff; stroke-width: 2; fill: none; }
+      .line-dim { stroke: #3d4b5c; stroke-width: 1.5; fill: none; stroke-dasharray: 5 5; }
+      .divider { stroke: #1e2836; stroke-width: 1; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3fb950"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#121a24" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect class="bg" width="1200" height="760"/>
+  <rect width="1200" height="760" fill="url(#grid)"/>
+
+  <text class="title" x="40" y="52">nb2700-telemetria</text>
+  <text class="subtitle" x="40" y="76">Arquitectura de diagnóstico · host x86_64 → router PowerPC → módem celular</text>
+  <line class="divider" x1="40" y1="92" x2="1160" y2="92"/>
+
+  <!-- HOST -->
+  <rect class="panel" x="40" y="120" width="350" height="500" rx="10"/>
+  <text class="h2" x="60" y="152">HOST DE DESARROLLO</text>
+  <text class="small" x="60" y="171">Linux x86_64 · compilación cruzada</text>
+
+  <rect class="card" x="60" y="188" width="310" height="74" rx="6"/>
+  <text class="h3" x="76" y="214">Código fuente</text>
+  <text class="mono" x="76" y="236">nbping.c · atcmd.c · Makefile</text>
+
+  <rect class="card" x="60" y="280" width="310" height="88" rx="6"/>
+  <text class="h3" x="76" y="306">Toolchain oficial</text>
+  <text class="mono green" x="76" y="328">netbox-ppc</text>
+  <text class="mono" x="76" y="348">GCC 4.4.5 + uClibc 0.9.31</text>
+
+  <rect class="card" x="60" y="386" width="310" height="88" rx="6"/>
+  <text class="h3" x="76" y="412">Artefactos</text>
+  <text class="mono amber" x="76" y="434">ELF 32-bit MSB PowerPC</text>
+  <text class="mono" x="76" y="454">static · stripped · ~34–40 KB</text>
+
+  <rect class="card" x="60" y="492" width="310" height="96" rx="6"/>
+  <text class="h3" x="76" y="518">Transferencia</text>
+  <text class="mono" x="76" y="540">scp -O · nc · base64/ssh</text>
+  <text class="small" x="76" y="562">dropbear sin sftp-server</text>
+
+  <line class="line" x1="215" y1="262" x2="215" y2="280" marker-end="url(#arrow)"/>
+  <line class="line" x1="215" y1="368" x2="215" y2="386" marker-end="url(#arrow)"/>
+  <line class="line" x1="215" y1="474" x2="215" y2="492" marker-end="url(#arrow)"/>
+
+  <!-- ROUTER -->
+  <rect class="panel" x="450" y="110" width="420" height="540" rx="10"/>
+  <text class="h2" x="472" y="142">ROUTER NETMODULE NB2700</text>
+  <text class="small" x="472" y="161">NRSW 4.6.0.105 · OpenWrt · BusyBox 1.30.1</text>
+  <text class="mono blue" x="472" y="181">PowerPC e300c3 @ 400 MHz · 56 MB RAM</text>
+
+  <rect class="card" x="472" y="198" width="376" height="64" rx="6"/>
+  <text class="h3" x="488" y="222">Ejecución como root</text>
+  <text class="mono" x="488" y="244">/tmp/nbping → /usr/bin/nbping (overlay)</text>
+
+  <rect class="card" x="472" y="278" width="376" height="74" rx="6"/>
+  <text class="h3" x="488" y="302">nbping</text>
+  <text class="mono" x="488" y="324">raw socket AF_INET / SOCK_RAW / ICMP</text>
+
+  <rect class="card" x="472" y="368" width="376" height="74" rx="6"/>
+  <text class="h3" x="488" y="392">atcmd</text>
+  <text class="mono" x="488" y="414">open tty · 115200 8N1 · write · select</text>
+
+  <rect class="card" x="472" y="458" width="376" height="74" rx="6"/>
+  <text class="h3" x="488" y="482">Red del router</text>
+  <text class="mono" x="488" y="504">LAN 1–4 · WAN 5 · LTE</text>
+
+  <rect class="card" x="472" y="548" width="376" height="74" rx="6"/>
+  <text class="h3" x="488" y="572">Telemetría base</text>
+  <text class="mono" x="488" y="594">/proc · /sys · cli status</text>
+
+  <!-- MODEM -->
+  <rect class="panel-alt" x="930" y="170" width="230" height="300" rx="10"/>
+  <text class="h2" x="948" y="202">MÓDEM</text>
+  <text class="h3" x="948" y="230">u-blox MPCI-L280</text>
+  <text class="small" x="948" y="249">TOBY-L2 · miniPCIe</text>
+
+  <rect class="card" x="948" y="266" width="194" height="52" rx="6"/>
+  <text class="mono" x="960" y="288">/dev/ttyACM0</text>
+  <text class="small" x="960" y="305">o /dev/ttyUSB2</text>
+
+  <rect class="card" x="948" y="334" width="194" height="52" rx="6"/>
+  <text class="mono" x="960" y="356">SIM · ICCID/IMSI</text>
+  <text class="small" x="960" y="373">estado con AT+CPIN?</text>
+
+  <rect class="card" x="948" y="402" width="194" height="52" rx="6"/>
+  <text class="mono" x="960" y="424">Antena · radio</text>
+  <text class="small" x="960" y="441">señal con AT+CSQ</text>
+
+  <!-- LINKS -->
+  <path class="line" d="M 390 400 L 420 400 L 420 338 L 450 338" marker-end="url(#arrow)"/>
+  <rect x="392" y="352" width="58" height="20" rx="4" fill="#0b0f14"/>
+  <text class="small blue" x="397" y="366">scp -O</text>
+
+  <path class="line" d="M 870 404 L 900 404 L 900 300 L 930 300" marker-end="url(#arrow)"/>
+  <rect x="872" y="330" width="58" height="20" rx="4" fill="#0b0f14"/>
+  <text class="small blue" x="877" y="344">UART</text>
+
+  <!-- NETWORK -->
+  <rect class="panel-alt" x="40" y="650" width="350" height="76" rx="8"/>
+  <text class="h3" x="60" y="676">LAN de ejemplo</text>
+  <text class="mono" x="60" y="698">198.51.100.0/24 · gestión</text>
+
+  <rect class="panel-alt" x="450" y="676" width="420" height="50" rx="8"/>
+  <text class="h3" x="470" y="706">WAN / Internet · 203.0.113.0/24 (documentación)</text>
+
+  <rect class="panel-alt" x="930" y="510" width="230" height="216" rx="8"/>
+  <text class="h3" x="948" y="538">Leyenda</text>
+  <line class="line" x1="948" y1="558" x2="992" y2="558" marker-end="url(#arrow)"/>
+  <text class="small" x="1002" y="562">transferencia</text>
+  <line class="line-green" x1="948" y1="586" x2="992" y2="586" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text class="small" x="1002" y="590">enlace serie</text>
+  <line class="line-dim" x1="948" y1="614" x2="992" y2="614"/>
+  <text class="small" x="1002" y="618">límite de dominio</text>
+  <text class="small" x="948" y="650">IPs de ejemplo reservadas</text>
+  <text class="small" x="948" y="668">para documentación (RFC 5737).</text>
+  <text class="small" x="948" y="692">Toolchain y firmware no</text>
+  <text class="small" x="948" y="708">se distribuyen en el repo.</text>
+</svg>

@@ -1,0 +1,44 @@
+# Binarios compilados (resultado del cross-compile)
+/*.o
+*.a
+*.so
+*.bin
+/atcmd
+/nbping
+
+# Credenciales — NUNCA versionar
+*.config
+config.h
+.env
+*.key
+
+# SDK / toolchains (NO subir a GitHub)
+sdk/
+
+# Firmware / imágenes (NO subir a GitHub)
+firmware/
+
+# Documentos de trabajo del pipeline
+PLAN.md
+AUDIT_REPORT.md
+
+# Builds y artefactos
+build/
+*.log
+
+# Sistema
+.DS_Store
+
+# ── Higiene de publicación (portfolio) ──────────────────────────────
+PLAN.md
+AUDIT_REPORT.md
+*.log
+.env
+.env.*
+!.env.example
+!.env.sample
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.DS_Store

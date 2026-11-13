@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="tfTitle tfDesc">
+  <title id="tfTitle">Flujo de telemetría y diagnóstico</title>
+  <desc id="tfDesc">Dos flujos paralelos: nbping con ICMP y atcmd con comandos AT sobre el puerto serie del módem.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0b0f14; }
+      .lane { fill: #0f1620; stroke: #253040; stroke-width: 1.4; }
+      .box { fill: #0d141c; stroke: #2d3b4d; stroke-width: 1.2; }
+      .box-blue { fill: #0d1722; stroke: #2f6f9f; stroke-width: 1.4; }
+      .box-green { fill: #0d1a14; stroke: #2f6f45; stroke-width: 1.4; }
+      .title { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 30px; font-weight: 700; }
+      .subtitle { fill: #8b98a9; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 14px; }
+      .lane-title { fill: #58a6ff; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+      .lane-title-green { fill: #3fb950; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+      .h3 { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 14px; font-weight: 700; }
+      .mono { fill: #d7e3f0; font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace; font-size: 11.5px; }
+      .small { fill: #7d8b9d; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 11px; }
+      .green { fill: #3fb950; }
+      .amber { fill: #d29922; }
+      .blue { fill: #58a6ff; }
+      .line { stroke: #58a6ff; stroke-width: 2; fill: none; }
+      .line-green { stroke: #3fb950; stroke-width: 2; fill: none; }
+      .divider { stroke: #1e2836; stroke-width: 1; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3fb950"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#121a24" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect class="bg" width="1200" height="800"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+
+  <text class="title" x="40" y="50">Flujo de diagnóstico</text>
+  <text class="subtitle" x="40" y="74">Dos caminos independientes que se cruzan en la interpretación: red IP y módem celular</text>
+  <line class="divider" x1="40" y1="90" x2="1160" y2="90"/>
+
+  <!-- ICMP LANE -->
+  <rect class="lane" x="40" y="118" width="1120" height="252" rx="10"/>
+  <text class="lane-title" x="60" y="146">NB PING · ICMP / IPv4</text>
+  <text class="small" x="300" y="146">raw socket · requiere root · RFC 792 / RFC 1071</text>
+
+  <rect class="box-blue" x="56" y="172" width="190" height="118" rx="7"/>
+  <text class="h3" x="72" y="198">1 · socket()</text>
+  <text class="mono" x="72" y="222">AF_INET</text>
+  <text class="mono" x="72" y="240">SOCK_RAW</text>
+  <text class="mono" x="72" y="258">IPPROTO_ICMP</text>
+  <text class="small" x="72" y="278">sin root: EPERM</text>
+
+  <rect class="box-blue" x="286" y="172" width="190" height="118" rx="7"/>
+  <text class="h3" x="302" y="198">2 · echo request</text>
+  <text class="mono" x="302" y="222">type 8 · code 0</text>
+  <text class="mono" x="302" y="240">id = pid &amp; 0xffff</text>
+  <text class="mono" x="302" y="258">seq = 1..count</text>
+  <text class="small" x="302" y="278">checksum RFC 1071</text>
+
+  <rect class="box-blue" x="516" y="172" width="190" height="118" rx="7"/>
+  <text class="h3" x="532" y="198">3 · echo reply</text>
+  <text class="mono" x="532" y="222">type 0</text>
+  <text class="mono" x="532" y="240">filtra id + seq</text>
+  <text class="mono" x="532" y="258">salta cabecera IP</text>
+  <text class="small" x="532" y="278">select() con timeout</text>
+
+  <rect class="box-blue" x="746" y="172" width="190" height="118" rx="7"/>
+  <text class="h3" x="762" y="198">4 · RTT</text>
+  <text class="mono" x="762" y="222">gettimeofday()</text>
+  <text class="mono" x="762" y="240">inicio / fin</text>
+  <text class="mono" x="762" y="258">ms enteros</text>
+  <text class="small" x="762" y="278">LAN: &lt; 1 ms → 0</text>
+
+  <rect class="box-blue" x="976" y="172" width="168" height="118" rx="7"/>
+  <text class="h3" x="992" y="198">5 · resumen</text>
+  <text class="mono" x="992" y="222">enviados</text>
+  <text class="mono" x="992" y="240">recibidos</text>
+  <text class="mono" x="992" y="258">pérdida %</text>
+  <text class="small" x="992" y="278">min / avg / max</text>
+
+  <line class="line" x1="246" y1="231" x2="284" y2="231" marker-end="url(#arrow)"/>
+  <line class="line" x1="476" y1="231" x2="514" y2="231" marker-end="url(#arrow)"/>
+  <line class="line" x1="706" y1="231" x2="744" y2="231" marker-end="url(#arrow)"/>
+  <line class="line" x1="936" y1="231" x2="974" y2="231" marker-end="url(#arrow)"/>
+
+  <!-- AT LANE -->
+  <rect class="lane" x="40" y="396" width="1120" height="252" rx="10"/>
+  <text class="lane-title-green" x="60" y="424">AT CMD · SERIE / AT</text>
+  <text class="small" x="300" y="424">115200 8N1 · sin flujo · modo raw · un disparo</text>
+
+  <rect class="box-green" x="56" y="450" width="190" height="118" rx="7"/>
+  <text class="h3" x="72" y="476">1 · open()</text>
+  <text class="mono" x="72" y="500">/dev/ttyACM0</text>
+  <text class="mono" x="72" y="518">O_RDWR</text>
+  <text class="mono" x="72" y="536">O_NOCTTY</text>
+  <text class="small" x="72" y="556">O_NONBLOCK</text>
+
+  <rect class="box-green" x="286" y="450" width="190" height="118" rx="7"/>
+  <text class="h3" x="302" y="476">2 · termios</text>
+  <text class="mono" x="302" y="500">B115200 · CS8</text>
+  <text class="mono" x="302" y="518">CLOCAL · CREAD</text>
+  <text class="mono" x="302" y="536">raw: iflag=oflag=0</text>
+  <text class="small" x="302" y="556">VMIN 0 · VTIME 1</text>
+
+  <rect class="box-green" x="516" y="450" width="190" height="118" rx="7"/>
+  <text class="h3" x="532" y="476">3 · write()</text>
+  <text class="mono" x="532" y="500">"AT+CSQ" + CR</text>
+  <text class="mono" x="532" y="518">o bytes literales</text>
+  <text class="mono" x="532" y="536">si crlf = 0</text>
+  <text class="small" x="532" y="556">"+++" sin CR</text>
+
+  <rect class="box-green" x="746" y="450" width="190" height="118" rx="7"/>
+  <text class="h3" x="762" y="476">4 · select / read</text>
+  <text class="mono" x="762" y="500">timeout wait_s</text>
+  <text class="mono" x="762" y="518">buffer 4096 B</text>
+  <text class="mono" x="762" y="536">silencia residual</text>
+  <text class="small" x="762" y="556">cada iteración</text>
+
+  <rect class="box-green" x="976" y="450" width="168" height="118" rx="7"/>
+  <text class="h3" x="992" y="476">5 · stdout</text>
+  <text class="mono" x="992" y="500">32..126</text>
+  <text class="mono" x="992" y="518">\n y \r</text>
+  <text class="mono" x="992" y="536">descarta control</text>
+  <text class="small" x="992" y="556">o "(sin respuesta)"</text>
+
+  <line class="line-green" x1="246" y1="509" x2="284" y2="509" marker-end="url(#arrowGreen)"/>
+  <line class="line-green" x1="476" y1="509" x2="514" y2="509" marker-end="url(#arrowGreen)"/>
+  <line class="line-green" x1="706" y1="509" x2="744" y2="509" marker-end="url(#arrowGreen)"/>
+  <line class="line-green" x1="936" y1="509" x2="974" y2="509" marker-end="url(#arrowGreen)"/>
+
+  <!-- TERMINALS -->
+  <rect class="box" x="40" y="678" width="550" height="94" rx="8"/>
+  <text class="small blue" x="58" y="700">salida típica · nbping</text>
+  <text class="mono green" x="58" y="722">$ nbping 198.51.100.20 4 1500</text>
+  <text class="mono" x="58" y="740">enviados: 4, recibidos: 4, perdidos: 0 (0%)</text>
+  <text class="mono" x="58" y="758">rtt min/avg/max = 0/0/0 ms</text>
+
+  <rect class="box" x="610" y="678" width="550" height="94" rx="8"/>
+  <text class="small green" x="628" y="700">salida típica · atcmd</text>
+  <text class="mono green" x="628" y="722">$ atcmd /dev/ttyACM0 "AT+CSQ" 3</text>
+  <text class="mono" x="628" y="740">+CSQ: 21,99</text>
+  <text class="mono" x="628" y="758">OK</text>
+</svg>

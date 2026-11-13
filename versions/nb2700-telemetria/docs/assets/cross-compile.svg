@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-labelledby="ccTitle ccDesc">
+  <title id="ccTitle">Pipeline de cross-compilación netbox-ppc</title>
+  <desc id="ccDesc">Seis etapas desde el código C hasta la ejecución en el router: fuente, gcc cruzado, link, strip, transferencia y ejecución.</desc>
+  <defs>
+    <style>
+      .bg { fill: #0b0f14; }
+      .panel { fill: #111820; stroke: #253040; stroke-width: 1.5; }
+      .stage { fill: #0e1620; stroke: #2d3b4d; stroke-width: 1.2; }
+      .stage-hot { fill: #101b26; stroke: #58a6ff; stroke-width: 1.6; }
+      .title { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 30px; font-weight: 700; }
+      .subtitle { fill: #8b98a9; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 14px; }
+      .num { fill: #58a6ff; font-family: 'DejaVu Sans Mono', monospace; font-size: 12px; font-weight: 700; }
+      .h3 { fill: #e6edf3; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 15px; font-weight: 700; }
+      .body { fill: #a9b7c6; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 12px; }
+      .mono { fill: #d7e3f0; font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace; font-size: 11.5px; }
+      .small { fill: #6f7f92; font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif; font-size: 11px; }
+      .green { fill: #3fb950; }
+      .amber { fill: #d29922; }
+      .blue { fill: #58a6ff; }
+      .line { stroke: #58a6ff; stroke-width: 2; fill: none; }
+      .divider { stroke: #1e2836; stroke-width: 1; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#121a24" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect class="bg" width="1200" height="680"/>
+  <rect width="1200" height="680" fill="url(#grid)"/>
+
+  <text class="title" x="40" y="52">Cross-compilación con netbox-ppc</text>
+  <text class="subtitle" x="40" y="76">De código C a binario ejecutándose en el NB2700 · GCC 4.4.5 + uClibc 0.9.31</text>
+  <line class="divider" x1="40" y1="92" x2="1160" y2="92"/>
+
+  <!-- STAGE 1 -->
+  <rect class="stage" x="40" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="56" y="216">01 · FUENTE</text>
+  <text class="h3" x="56" y="244">C puro</text>
+  <text class="mono" x="56" y="270">nbping.c</text>
+  <text class="mono" x="56" y="290">atcmd.c</text>
+  <text class="small" x="56" y="318">Sin librerías</text>
+  <text class="small" x="56" y="334">externas</text>
+
+  <!-- STAGE 2 -->
+  <rect class="stage-hot" x="230" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="246" y="216">02 · GCC CRUZADO</text>
+  <text class="h3" x="246" y="244">netbox-ppc</text>
+  <text class="mono" x="246" y="270">powerpc-</text>
+  <text class="mono" x="246" y="288">openwrt-linux-gcc</text>
+  <text class="small" x="246" y="318">-static -Os</text>
+  <text class="small" x="246" y="334">-Wall -Wextra</text>
+
+  <!-- STAGE 3 -->
+  <rect class="stage" x="420" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="436" y="216">03 · LINK</text>
+  <text class="h3" x="436" y="244">ELF32 MSB</text>
+  <text class="mono amber" x="436" y="270">PowerPC</text>
+  <text class="mono" x="436" y="290">big-endian</text>
+  <text class="small" x="436" y="318">Estático</text>
+  <text class="small" x="436" y="334">Tipo EXEC</text>
+
+  <!-- STAGE 4 -->
+  <rect class="stage" x="610" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="626" y="216">04 · STRIP</text>
+  <text class="h3" x="626" y="244">Sin símbolos</text>
+  <text class="mono" x="626" y="270">34–40 KB</text>
+  <text class="mono" x="626" y="290">por binario</text>
+  <text class="small" x="626" y="318">file + readelf</text>
+  <text class="small" x="626" y="334">verifican</text>
+
+  <!-- STAGE 5 -->
+  <rect class="stage" x="800" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="816" y="216">05 · TRANSFER</text>
+  <text class="h3" x="816" y="244">scp -O</text>
+  <text class="mono" x="816" y="270">o nc / base64</text>
+  <text class="mono" x="816" y="290">→ /tmp</text>
+  <text class="small" x="816" y="318">sha256 en ambos</text>
+  <text class="small" x="816" y="334">extremos</text>
+
+  <!-- STAGE 6 -->
+  <rect class="stage" x="990" y="190" width="160" height="160" rx="8"/>
+  <text class="num" x="1006" y="216">06 · EXEC</text>
+  <text class="h3" x="1006" y="244">root</text>
+  <text class="mono" x="1006" y="270">/tmp/nbping</text>
+  <text class="mono" x="1006" y="290">/tmp/atcmd</text>
+  <text class="small" x="1006" y="318">ICMP · AT</text>
+  <text class="small" x="1006" y="334">NB2700</text>
+
+  <!-- ARROWS -->
+  <line class="line" x1="200" y1="270" x2="228" y2="270" marker-end="url(#arrow)"/>
+  <line class="line" x1="390" y1="270" x2="418" y2="270" marker-end="url(#arrow)"/>
+  <line class="line" x1="580" y1="270" x2="608" y2="270" marker-end="url(#arrow)"/>
+  <line class="line" x1="770" y1="270" x2="798" y2="270" marker-end="url(#arrow)"/>
+  <line class="line" x1="960" y1="270" x2="988" y2="270" marker-end="url(#arrow)"/>
+
+  <!-- DETAIL CARDS -->
+  <rect class="panel" x="40" y="404" width="550" height="224" rx="10"/>
+  <text class="h3" x="60" y="434">Flags y por qué</text>
+  <text class="mono green" x="60" y="462">-static</text>
+  <text class="body" x="150" y="462">no depende de la libc del firmware</text>
+  <text class="mono green" x="60" y="490">-Os</text>
+  <text class="body" x="150" y="490">optimiza tamaño; flash y RAM escasas</text>
+  <text class="mono green" x="60" y="518">-Wall -Wextra</text>
+  <text class="body" x="150" y="518">código chico, advertencias baratas</text>
+  <text class="mono green" x="60" y="546">strip</text>
+  <text class="body" x="150" y="546">quita símbolos; menos bytes en NAND</text>
+  <text class="small" x="60" y="582">La toolchain (~17 MB) y el firmware no se versionan.</text>
+  <text class="small" x="60" y="600">SDK_DIR se puede sobrescribir sin editar el Makefile.</text>
+
+  <rect class="panel" x="610" y="404" width="550" height="224" rx="10"/>
+  <text class="h3" x="630" y="434">Verificación esperada</text>
+  <text class="mono amber" x="630" y="460">$ file nbping</text>
+  <text class="mono" x="630" y="480">ELF 32-bit MSB executable, PowerPC,</text>
+  <text class="mono" x="630" y="498">statically linked, stripped</text>
+  <text class="mono amber" x="630" y="526">$ readelf -h nbping</text>
+  <text class="mono" x="630" y="546">Class: ELF32 · Data: big endian</text>
+  <text class="mono" x="630" y="564">Machine: PowerPC · Type: EXEC</text>
+  <text class="small" x="630" y="594">Si Machine dice ARM o MIPS, la toolchain es incorrecta.</text>
+  <text class="small" x="630" y="612">Si Class dice ELF64, se compiló para el host.</text>
+
+  <text class="small" x="40" y="658">nb2700-telemetria · pipeline validado el 2026-09-24 · documentación MIT</text>
+</svg>
