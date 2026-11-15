@@ -134,6 +134,28 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   .stat{border-right:0;border-bottom:1px solid var(--line)}
   h1{font-size:42px}
 }
+
+/* ── Contenido heredado del proyecto original, en clave sobria ── */
+.rich{max-width:78ch}
+.rich p{margin:0 0 14px;color:#c3d4da}
+.rich h3{margin:26px 0 10px;font-size:19px;letter-spacing:-.02em}
+.rich h4{margin:22px 0 8px;font-size:15px;letter-spacing:-.01em}
+.rich ul,.rich ol{margin:0 0 16px;padding-left:22px;color:#c3d4da}
+.rich li{margin:0 0 6px}
+.rich figure{margin:22px 0;border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(11,34,43,.5)}
+.rich figure img{width:100%;display:block;border-radius:10px}
+.rich figcaption{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:9px;line-height:1.5}
+.rich .table-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px}
+.rich table{border-collapse:collapse;width:100%;font-size:13.5px}
+.rich th,.rich td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.rich th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:rgba(11,34,43,.6)}
+.rich tr:last-child td{border-bottom:0}
+.rich pre{margin:18px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#04141a;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.6;color:#cfe3e8}
+.rich code{font-family:var(--mono);font-size:.92em}
+.rich .note{margin:18px 0;padding:13px 16px;border-left:2px solid var(--accent);background:rgba(42,157,143,.07);color:#c3d4da;font-size:14px}
+.rich .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.rich .card-grid .card{margin:0}
+
 </style>
 <link rel="stylesheet" href="assets/community.css?v=1">
 </head>
@@ -182,35 +204,44 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   <a href="https://github.com/jmadasme/nb2700-telemetria/tree/main/versions/nb2700-telemetria" target="_blank" rel="noopener">Ver carpeta <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
 </article></div>
 </div></section>
-
-<section class="section tight"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">03 — Cómo se usa</div><h2>De la carpeta a la práctica.</h2></div>
-  <div class="timeline"><div class="step reveal"><div class="step-n">01</div><h4>Compilá cruzado</h4><p>Toolchain para PowerPC/netbox-ppc.</p></div><div class="step reveal"><div class="step-n">02</div><h4>Copiá los binarios</h4><p>Al router por el medio disponible.</p></div><div class="step reveal"><div class="step-n">03</div><h4>Probá nbping</h4><p>Verificá ICMP y rutas.</p></div><div class="step reveal"><div class="step-n">04</div><h4>Abrí atcmd</h4><p>Consultá el módem por comandos AT.</p></div></div>
-</div></section>
-
-<section class="section tight"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">04 — Decisiones</div><h2>Lo que lo hace distinto</h2></div>
-  <div class="features"><div class="feature reveal"><h4>Dos binarios</h4><p>Cada uno resuelve una pregunta.</p></div><div class="feature reveal"><h4>ICMP crudo</h4><p>Ping sin depender de utilidades del sistema.</p></div><div class="feature reveal"><h4>Consola AT</h4><p>Diálogo directo con el módem.</p></div><div class="feature reveal"><h4>Cross-compile</h4><p>Build para la arquitectura real.</p></div><div class="feature reveal"><h4>Validado</h4><p>Probado en el NB2700.</p></div><div class="feature reveal"><h4>Sin SDK</h4><p>No requiere el SDK completo del fabricante.</p></div></div>
-</div></section>
-
-<section class="section tight" id="stack"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">05 — Stack y arranque</div><h2>Con qué está construido</h2></div>
-  <div class="stack-grid">
-    <div class="reveal"><div class="chips"><span class="chip">C</span><span class="chip">NetModule NB2700</span><span class="chip">PowerPC</span><span class="chip">ICMP</span><span class="chip">AT commands</span></div><div class="note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>Requiere la toolchain de compilación cruzada. El SDK de NetModule no se incluye; los binarios se compilan desde el código. Se removieron secretos en 2 archivo(s) de esta familia.</span></div></div>
-    <div class="terminal reveal"><div class="terminal-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><pre>git clone https://github.com/jmadasme/nb2700-telemetria.git
-cd nb2700-telemetria/versions/nb2700-telemetria
-make
-# copiá nbping y atcmd al router según el README</pre></div>
-  </div>
-</div></section>
-
-<section class="section tight" id="docs"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">06 — Documentación</div><h2>Para usar y para entender.</h2><p class="section-sub">Cada documento está en el repositorio, versionado junto al código.</p></div>
-  <div class="docs"><a class="doc reveal" href="https://github.com/jmadasme/nb2700-telemetria/blob/main/docs/datasheet.md" target="_blank" rel="noopener"><span class="tag">DATASHEET</span><h4>Manual de operación</h4><p>Instalación, configuración, uso y diagnóstico.</p></a><a class="doc reveal" href="https://github.com/jmadasme/nb2700-telemetria/blob/main/docs/developer.md" target="_blank" rel="noopener"><span class="tag">DEVELOPER</span><h4>Guía de código</h4><p>Arquitectura, módulos, contratos y extensión.</p></a><a class="doc reveal" href="https://github.com/jmadasme/nb2700-telemetria/blob/main/docs/REFERENCES.md" target="_blank" rel="noopener"><span class="tag">REFERENCES</span><h4>Referencias</h4><p>Estándares, librerías y fuentes oficiales.</p></a><a class="doc reveal" href="https://github.com/jmadasme/nb2700-telemetria/blob/main/docs/BITACORA.md" target="_blank" rel="noopener"><span class="tag">BITÁCORA</span><h4>Decisiones y pruebas</h4><p>Qué se intentó, qué falló y por qué se cambió.</p></a></div>
-</div></section>
-
-<section class="section tight"><div class="wrap"><div class="note reveal"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span><strong>Preservación:</strong> las versiones se copiaron sin <code>.git</code>, <code>node_modules</code>, entornos virtuales, compilados ni bases de datos. Los tokens y claves detectados fueron redactados; las plantillas <code>.example</code> se conservan. Las limitaciones conocidas están en la documentación, no escondidas.</span></div></div></section>
-
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">01 — La idea</div><h2>Cuando el router es la caja negra</h2><p class="section-sub">Un NB2700 en producción no siempre tiene tcpdump ni ping. Estas herramientas se cross-compilan y se copian por scp para diagnosticar desde dentro.</p></div><div class="rich reveal"><div class="card-grid">
+<div class="card"><h3>El problema</h3><div><div></div><p>El firmware NRSW del NB2700 es compacto y no siempre incluye las utilidades de red que uno espera. Diagnosticar latencia o hablar con el módem celular requiere herramientas que no están en la imagen.</p></div></div>
+<div class="card"><h3>La solución</h3><div><div></div><p>Dos programas C independientes: nbping abre un socket ICMP raw y mide RTT; atcmd abre la UART del módem y permite enviar comandos AT. Se compilan con la toolchain oficial y se ejecutan en el router.</p></div></div>
+</div></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">02 — El recorrido</div><h2>Cómo funciona, paso a paso</h2><p class="section-sub">Del cross-compile al diagnóstico, sin instalar un paquete que no existe.</p></div><div class="rich reveal"><div class="timeline">
+<div class="step"><div class="step-n">01</div><h4>Cross-compilar</h4><div><p>El Makefile usa GCC 4.4.5 y uClibc 0.9.31 de la toolchain de NetModule para PowerPC.</p></div></div>
+<div class="step"><div class="step-n">02</div><h4>Copiar al router</h4><div><p>El binario se transfiere por scp a /tmp o /root, sin tocar la imagen del firmware.</p></div></div>
+<div class="step"><div class="step-n">03</div><h4>Ejecutar nbping</h4><div><p>ICMP raw mide RTT y pérdida contra un host, con una salida simple y legible.</p></div></div>
+<div class="step"><div class="step-n">04</div><h4>Abrir la UART</h4><div><p>atcmd envía comandos AT al módem u-blox y muestra la respuesta para diagnosticar la conexión celular.</p></div></div>
+</div></div></div></section>
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">03 — Bajo el capó</div><h2>Dos herramientas, una caja</h2><p class="section-sub">Cada binario resuelve una pregunta distinta y no arrastra dependencias.</p></div><div class="rich reveal"><figure><img src="assets/rich/architecture.svg" alt="Diagrama de nbping y atcmd dentro del router NB2700" loading="lazy"><figcaption>nbping mira la red; atcmd mira el módem. Ambos corren dentro del router.</figcaption></figure>
+<div class="card-grid">
+<div class="card"><h3>ICMP raw</h3><div><p>nbping abre el socket directamente y construye el paquete, sin depender de /bin/ping.</p></div></div>
+<div class="card"><h3>UART del módem</h3><div><p>atcmd conoce la ruta del dispositivo y los parámetros de la UART del NB2700.</p></div></div>
+<div class="card"><h3>Cruzando la frontera</h3><div><p>El código se compila para PowerPC con la toolchain del fabricante, no con el GCC del host.</p></div></div>
+</div></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">04 — Lo que lo hace distinto</div><h2>Decisiones de ingeniería</h2><p class="section-sub">Herramientas pequeñas para preguntas concretas.</p></div><div class="rich reveal"><div class="features">
+<div class="feature"><h3>nbping</h3><div><p>Ping ICMP raw con RTT y pérdida, pensado para una consola mínima.</p></div></div>
+<div class="feature"><h3>atcmd</h3><div><p>Consola AT para el módem u-blox MPCI-L280 y su UART.</p></div></div>
+<div class="feature"><h3>PowerPC</h3><div><p>Cross-compile para e300c3 con GCC 4.4.5 y uClibc 0.9.31.</p></div></div>
+<div class="feature"><h3>Sin daemons</h3><div><p>Se ejecuta a demanda y no deja servicios corriendo.</p></div></div>
+<div class="feature"><h3>Bajo consumo</h3><div><p>Dos binarios pequeños para un router con 56 MB de RAM.</p></div></div>
+<div class="feature"><h3>Diagnóstico honesto</h3><div><p>La documentación separa lo probado en el equipo de lo que depende del firmware.</p></div></div>
+</div></div></div></section>
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">05 — Diagramas</div><h2>El sistema, en dibujos</h2><p class="section-sub">Los diagramas se mantienen en el repositorio y se actualizan con el código.</p></div><div class="rich reveal"><figure><img src="assets/rich/cross-compile.svg" alt="NB2700 Telemetría — cross compile" loading="lazy"><figcaption>Cross Compile</figcaption></figure>
+<figure><img src="assets/rich/telemetry-flow.svg" alt="NB2700 Telemetría — telemetry flow" loading="lazy"><figcaption>Telemetry Flow</figcaption></figure></div></div></section>
+<section class="section"><div class="wrap"><div class="section-head reveal"><div class="kicker">06 — Stack y arranque</div><h2>Con qué está construido</h2><p class="section-sub">C89/C99, Makefile y la toolchain oficial de NetModule. No hay Python, no hay runtime y no hay paquetes que instalar en el router.</p></div><div class="rich reveal"><p>C PowerPC GCC 4.4.5 uClibc NetModule NRSW Make La toolchain y el firmware del fabricante no se versionan. El README explica dónde obtenerlos.</p>
+<p>nb2700 · compilación</p>
+<pre><span>$</span> make CC=powerpc-linux-gcc
+<span>$</span> scp nbping root@192.0.2.1:/tmp/
+<span>$</span> scp atcmd root@192.0.2.1:/tmp/
+<span>$</span> ssh root@192.0.2.1 /tmp/nbping 8.8.8.8</pre></div></div></section>
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">07 — Documentación</div><h2>Todo está escrito</h2><p class="section-sub">Cada decisión, cada límite y cada comando están documentados en el repositorio. Sin folletos: lo que funciona se muestra, lo que no, también.</p></div><div class="rich reveal"><div class="card-grid">
+<a class="card" href=""><h3>La guía completa</h3><p>Hardware, toolchain, compilación, despliegue y diagnóstico.</p></a>
+<a class="card" href=""><h3>Manual de operación</h3><p>Uso de nbping y atcmd, parámetros, salidas y errores.</p></a>
+<a class="card" href=""><h3>Guía de código</h3><p>Sockets raw, UART, Makefile y portabilidad.</p></a>
+<a class="card" href=""><h3>Referencias</h3><p>NetModule, u-blox, ICMP y toolchain.</p></a>
+</div></div></div></section>
 <section class="cta"><div class="wrap"><div class="cta-box reveal">
   <div class="kicker">Siguiente paso</div><h2>¿Te animás?</h2>
   <p>Usá esta familia como base para nb2700 telemetría. Está documentada para que puedas entenderla, ejecutarla y continuarla sin adivinar.</p>
