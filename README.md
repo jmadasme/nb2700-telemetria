@@ -12,8 +12,6 @@ Cada carpeta conserva el contenido original de su etapa, sin `.git`, dependencia
 instaladas ni binarios pesados. La documentación de operación y de código está en
 [`docs/`](docs/), y el sitio del proyecto en [`docs/index.html`](docs/index.html).
 
-> **Nota de preservación:** se removieron credenciales, claves o tokens detectados en 2 archivo(s) de esta familia. Los ejemplos y plantillas seguras se conservan.
-
 ## Índice de versiones
 
 | Versión | Qué aporta | Archivos |
@@ -35,6 +33,64 @@ make
 
 Requiere la toolchain de compilación cruzada. El SDK de NetModule no se incluye; los binarios se compilan desde el código.
 
+<!-- ficha -->
+## Ficha de evaluación
+
+**Madurez global: 3.3/5**
+
+| Criterio | Nota | Evidencia |
+|---|---:|---|
+| Madurez | 2/5 | Dos binarios validados en hardware, con deuda declarada en checksum, validación de longitud y termios. |
+| Reproducibilidad | 3/5 | Toolchain y build estático documentados; el SDK no se distribuye con el repositorio y hay que obtenerlo. |
+| Documentación | 5/5 | Bitácora de 398 líneas con cronología, comandos exactos, vías descartadas y trabajo pendiente priorizado. |
+| Honestidad de límites | 5/5 | Advierte sobre doc/ con datos sensibles, atcmd sin target y debilidades del parser ICMP. |
+| Valor demostrativo | 3/5 | Cubre el ciclo completo de cross-compile y despliegue en un router industrial, con alcance acotado. |
+| Facilidad de despliegue | 2/5 | Requiere toolchain PowerPC, acceso SSH con algoritmos legacy y copia manual de los binarios. |
+
+Ejercicio breve y bien documentado de cross-compilación para un router industrial al final de su vida. Las herramientas sirven en laboratorio; el activo real es el procedimiento y su registro de errores.
+
+## Lo que no funcionó
+
+### nb2700-telemetria — Toolchain MIPS para un equipo PowerPC
+
+El SDK disponible pertenecía a otro proyecto y era MIPS; además había quedado en /tmp y se perdió al reiniciar el equipo. Se descargó netbox-ppc, se verificó que powerpc-openwrt-linux-gcc generara un ELF MSB y la toolchain quedó guardada dentro del proyecto.
+
+### nb2700-telemetria — Puerto 22 que parecía cerrado
+
+SSH daba timeout mientras Telnet funcionaba y dropbear escuchaba en el puerto 22. La causa era doble: una regla DENY OUT en UFW del host y el rechazo de claves ssh-rsa por OpenSSH 9.6. Se corrigió la regla y se habilitaron algoritmos legacy en el cliente.
+
+### nb2700-telemetria — atcmd fuera del Makefile
+
+El Makefile se escribió y validó para nbping; atcmd se compiló a mano y nunca se agregó como target para no alterar el artefacto probado. Un clon nuevo ejecuta make y obtiene solo nbping, y debe seguir el comando manual de developer.md.
+
+### nb2700-telemetria — Binario que desaparecía al reiniciar
+
+La primera copia se hizo en /tmp, que es tmpfs, y el binario se perdía en cada arranque. Se movió a /usr/bin con permisos 755 y se verificó tras reiniciar, asumiendo el desgaste de flash que implica escribir en el overlay.
+
+## Preguntas típicas
+
+**¿Qué es nbping?**
+
+Un ping mínimo con ICMP crudo, pensado para el router.
+
+**¿Qué es atcmd?**
+
+Una consola para enviar comandos AT al módem.
+
+**¿Por qué C?**
+
+Para que quepa y corra sin dependencias en el equipo.
+
+**¿Funciona en otro router?**
+
+El código es portable; hay que recompilar para otra arquitectura.
+
+**¿Se incluyen binarios?**
+
+No. Se compilan desde la fuente.
+
+<!-- /ficha -->
+
 ## Documentación
 
 - [`docs/datasheet.md`](docs/datasheet.md) — instalación, operación y límites.
@@ -42,9 +98,9 @@ Requiere la toolchain de compilación cruzada. El SDK de NetModule no se incluye
 - [`docs/REFERENCES.md`](docs/REFERENCES.md) — estándares, librerías y fuentes.
 - [`docs/index.html`](docs/index.html) — página del proyecto (GitHub Pages).
 
-## Alcance y honestidad
+## El proyecto en detalle
 
-## nb2700-telemetria
+### nb2700-telemetria
 
 **Dos utilidades C mínimas para diagnosticar un router NetModule NB2700 desde adentro: ping ICMP con raw sockets y diálogo AT directo con el módem celular u-blox.**
 
